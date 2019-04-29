@@ -4,7 +4,7 @@ namespace App\Model\Read;
 
 use App\Model\ValueObject\Date;
 
-interface Thought extends Article {
+interface Thought extends PublishedArticle {
 
 	public function key(): string;
 
