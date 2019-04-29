@@ -2,6 +2,7 @@
 
 namespace Test\Unit\Service\Usecase;
 
+use App\Model\Read\Article;
 use App\Service\Repository\Read\ArticleRepository;
 use App\Service\Repository\Read\AuthRepository;
 use App\Service\Usecase\PrepareAdminPage;
@@ -19,12 +20,14 @@ class PrepareAdminPageTest extends TestCase {
 		$input = \Mockery::mock(PrepareAdminPageInput::class);
 		$authRepository = \Mockery::mock(AuthRepository::class);
 		$authRepository->shouldReceive('isAuthenticated')->andReturn(true);
-		Di::set(AuthRepository::class, $authRepository);
+		Di::mock(AuthRepository::class, $authRepository);
+		$article = \Mockery::mock(Article::class);
+		$articles = [$article, $article, $article];
 		$articleRepository = \Mockery::mock(ArticleRepository::class);
-		$articleRepository->shouldReceive('getAll')->andReturn([]);
-		Di::set(ArticleRepository::class, $articleRepository);
+		$articleRepository->shouldReceive('getAll')->andReturn($articles);
+		Di::mock(ArticleRepository::class, $articleRepository);
 		$output = \Mockery::mock(PrepareAdminPageOutput::class);
-		Di::set(PrepareAdminPageOutput::class, $output);
+		Di::mockWithInput(PrepareAdminPageOutput::class, $output, true, $articles);
 
 		$usecase = new PrepareAdminPage($input);
 		$presenter = $usecase->execute();
@@ -38,9 +41,9 @@ class PrepareAdminPageTest extends TestCase {
 		$input = \Mockery::mock(PrepareAdminPageInput::class);
 		$authRepository = \Mockery::mock(AuthRepository::class);
 		$authRepository->shouldReceive('isAuthenticated')->andReturn(false);
-		Di::set(AuthRepository::class, $authRepository);
+		Di::mock(AuthRepository::class, $authRepository);
 		$output = \Mockery::mock(PrepareAdminPageOutput::class);
-		Di::set(PrepareAdminPageOutput::class, $output);
+		Di::mockWithInput(PrepareAdminPageOutput::class, $output, false);
 
 		$usecase = new PrepareAdminPage($input);
 		$presenter = $usecase->execute();

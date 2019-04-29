@@ -16,7 +16,7 @@ class PrepareTopPageTest extends TestCase {
 	public function execute() {
 		$input = \Mockery::mock(PrepareTopPageInput::class);
 		$output = \Mockery::mock(PrepareTopPageOutput::class);
-		Di::set(PrepareTopPageOutput::class, $output);
+		Di::mock(PrepareTopPageOutput::class, $output);
 
 		$usecase = new PrepareTopPage($input);
 		$presenter = $usecase->execute();

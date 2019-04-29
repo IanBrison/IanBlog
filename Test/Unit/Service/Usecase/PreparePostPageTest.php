@@ -24,9 +24,9 @@ class PreparePostPageTest extends TestCase {
 		$postRepository->shouldReceive('getById')
 			->with($postId)
 			->andReturn($post);
-		Di::set(PostRepository::class, $postRepository);
+		Di::mock(PostRepository::class, $postRepository);
 		$output = \Mockery::mock(PreparePostPageOutput::class);
-		Di::set(PreparePostPageOutput::class, $output);
+		Di::mockWithInput(PreparePostPageOutput::class, $output, $post);
 
 		$usecase = new PreparePostPage($input);
 		$presenter = $usecase->execute();

@@ -2,6 +2,7 @@
 
 namespace Test\Unit\Service\Usecase;
 
+use App\Model\Read\Thought;
 use App\Service\Repository\Read\ThoughtRepository;
 use App\Service\Usecase\PrepareThoughtsPage;
 use App\Service\UsecaseInput\PrepareThoughtsPageInput;
@@ -16,11 +17,13 @@ class PrepareThoughtsPageTest extends TestCase {
 	 */
 	public function execute() {
 		$input = \Mockery::mock(PrepareThoughtsPageInput::class);
-		$thoughRepository = \Mockery::mock(ThoughtRepository::class);
-		$thoughRepository->shouldReceive('getAll')->andReturn([]);
-		Di::set(ThoughtRepository::class, $thoughRepository);
+		$thought = \Mockery::mock(Thought::class);
+		$thoughts = [$thought, $thought, $thought];
+		$thoughtRepository = \Mockery::mock(ThoughtRepository::class);
+		$thoughtRepository->shouldReceive('getAll')->andReturn($thoughts);
+		Di::mock(ThoughtRepository::class, $thoughtRepository);
 		$output = \Mockery::mock(PrepareThoughtsPageOutput::class);
-		Di::set(PrepareThoughtsPageOutput::class, $output);
+		Di::mockWithInput(PrepareThoughtsPageOutput::class, $output, $thoughts);
 
 		$usecase = new PrepareThoughtsPage($input);
 		$presenter = $usecase->execute();

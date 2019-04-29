@@ -24,9 +24,9 @@ class PrepareThoughtPageTest extends TestCase {
 		$thoughtRepository->shouldReceive('getById')
 			->with($thoughtId)
 			->andReturn($thought);
-		Di::set(ThoughtRepository::class, $thoughtRepository);
+		Di::mock(ThoughtRepository::class, $thoughtRepository);
 		$output = \Mockery::mock(PrepareThoughtPageOutput::class);
-		Di::set(PrepareThoughtPageOutput::class, $output);
+		Di::mockWithInput(PrepareThoughtPageOutput::class, $output, $thought);
 
 		$usecase = new PrepareThoughtPage($input);
 		$presenter = $usecase->execute();

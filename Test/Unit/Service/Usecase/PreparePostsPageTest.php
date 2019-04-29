@@ -2,6 +2,7 @@
 
 namespace Test\Unit\Service\Usecase;
 
+use App\Model\Read\Post;
 use App\Service\Repository\Read\PostRepository;
 use App\Service\Usecase\PreparePostsPage;
 use App\Service\UsecaseInput\PreparePostsPageInput;
@@ -16,11 +17,13 @@ class PreparePostsPageTest extends TestCase {
 	 */
 	public function execute() {
 		$input = \Mockery::mock(PreparePostsPageInput::class);
+		$post = \Mockery::mock(Post::class);
+		$posts = [$post, $post, $post];
 		$postRepository = \Mockery::mock(PostRepository::class);
-		$postRepository->shouldReceive('getAll')->andReturn([]);
-		Di::set(PostRepository::class, $postRepository);
+		$postRepository->shouldReceive('getAll')->andReturn($posts);
+		Di::mock(PostRepository::class, $postRepository);
 		$output = \Mockery::mock(PreparePostsPageOutput::class);
-		Di::set(PreparePostsPageOutput::class, $output);
+		Di::mockWithInput(PreparePostsPageOutput::class, $output, $posts);
 
 		$usecase = new PreparePostsPage($input);
 		$presenter = $usecase->execute();
