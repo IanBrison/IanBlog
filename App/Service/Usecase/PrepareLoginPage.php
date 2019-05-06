@@ -3,6 +3,7 @@
 namespace App\Service\Usecase;
 
 use App\Service\Repository\Read\AuthRepository;
+use App\Service\UsecaseOutput\Impls\PrepareLoginPageOutput\LoginStatus;
 use App\Service\UsecaseOutput\PrepareLoginPageOutput;
 use Core\Di\DiContainer as Di;
 
@@ -10,8 +11,8 @@ class PrepareLoginPage {
 
 	public function execute(): PrepareLoginPageOutput {
 		if (Di::get(AuthRepository::class)->isAuthenticated()) {
-			return Di::get(PrepareLoginPageOutput::class, true);
+			return new LoginStatus(true);
 		}
-		return Di::get(PrepareLoginPageOutput::class, false);
+		return new LoginStatus(false);
 	}
 }

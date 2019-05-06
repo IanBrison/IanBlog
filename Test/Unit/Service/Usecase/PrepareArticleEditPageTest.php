@@ -7,7 +7,6 @@ use App\Service\Repository\Read\ArticleRepository;
 use App\Service\Repository\Read\AuthRepository;
 use App\Service\Usecase\PrepareArticleEditPage;
 use App\Service\UsecaseInput\PrepareArticleEditPageInput;
-use App\Service\UsecaseOutput\PrepareArticleEditPageOutput;
 use Core\Di\DiContainer as Di;
 use Test\TestCase;
 
