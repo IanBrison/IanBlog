@@ -5,7 +5,6 @@ namespace Test\Unit\Service\Usecase;
 use App\Service\Repository\Read\AuthRepository;
 use App\Service\Usecase\AttemptLogin;
 use App\Service\UsecaseInput\AttemptLoginInput;
-use App\Service\UsecaseOutput\AttemptLoginOutput;
 use Core\Di\DiContainer as Di;
 use Test\TestCase;
 

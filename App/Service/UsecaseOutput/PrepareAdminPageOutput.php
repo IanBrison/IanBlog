@@ -6,10 +6,10 @@ use App\Model\Read\Article;
 
 interface PrepareAdminPageOutput {
 
+	public function isAuthenticated(): bool;
+
 	/**
-	 * PrepareAdminPageOutput constructor.
-	 * @param bool $isAuthenticated
-	 * @param Article[] $articles
+	 * @return Article[]
 	 */
-	public function __construct(bool $isAuthenticated, array $articles = []);
+	public function getArticles(): array;
 }
