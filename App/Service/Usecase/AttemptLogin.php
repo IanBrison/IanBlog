@@ -18,8 +18,21 @@ class AttemptLogin {
 	public function execute(): AttemptLoginOutput {
 		$password = $this->input->getPassword();
 		if (!Di::get(AuthRepository::class)->attemptLogin($password)) {
-			return Di::get(AttemptLoginOutput::class, false);
+			return new AttemptResult(false);
 		}
-		return Di::get(AttemptLoginOutput::class, true);
+		return new AttemptResult(true);
+	}
+}
+
+class AttemptResult implements AttemptLoginOutput {
+
+	private $result;
+
+	public function __construct(bool $result) {
+		$this->result = $result;
+	}
+
+	public function isNowLogin(): bool {
+		return $this->result;
 	}
 }

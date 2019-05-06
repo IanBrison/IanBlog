@@ -23,12 +23,10 @@ class AttemptLoginTest extends TestCase {
 			->with($password)
 			->andReturn(true);
 		Di::mock(AuthRepository::class, $authRepository);
-		$output = \Mockery::mock(AttemptLoginOutput::class);
-		Di::mockWithInput(AttemptLoginOutput::class, $output, true);
 
 		$usecase = new AttemptLogin($input);
-		$presenter = $usecase->execute();
-		$this->assertSame($output, $presenter);
+		$output = $usecase->execute();
+		$this->assertTrue($output->isNowLogin());
 	}
 
 	/**
@@ -43,11 +41,9 @@ class AttemptLoginTest extends TestCase {
 			->with($password)
 			->andReturn(false);
 		Di::mock(AuthRepository::class, $authRepository);
-		$output = \Mockery::mock(AttemptLoginOutput::class);
-		Di::mockWithInput(AttemptLoginOutput::class, $output, false);
 
 		$usecase = new AttemptLogin($input);
-		$presenter = $usecase->execute();
-		$this->assertSame($output, $presenter);
+		$output = $usecase->execute();
+		$this->assertFalse($output->isNowLogin());
 	}
 }
