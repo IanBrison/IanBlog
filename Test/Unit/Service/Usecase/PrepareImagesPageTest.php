@@ -24,12 +24,11 @@ class PrepareImagesPageTest extends TestCase {
 		$imageRepository = \Mockery::mock(ImageRepository::class);
 		$imageRepository->shouldReceive('getAll')->andReturn($images);
 		Di::mock(ImageRepository::class, $imageRepository);
-		$output = \Mockery::mock(PrepareImagesPageOutput::class);
-		Di::mockWithInput(PrepareImagesPageOutput::class, $output, true, $images);
 
 		$usecase = new PrepareImagesPage();
-		$presenter = $usecase->execute();
-		$this->assertSame($output, $presenter);
+		$output = $usecase->execute();
+		$this->assertTrue($output->isAuthenticated());
+		$this->assertSame($images, $output->getImages());
 	}
 
 	/**
@@ -43,7 +42,7 @@ class PrepareImagesPageTest extends TestCase {
 		Di::mockWithInput(PrepareImagesPageOutput::class, $output, false);
 
 		$usecase = new PrepareImagesPage();
-		$presenter = $usecase->execute();
-		$this->assertSame($output, $presenter);
+		$output = $usecase->execute();
+		$this->assertFalse($output->isAuthenticated());
 	}
 }

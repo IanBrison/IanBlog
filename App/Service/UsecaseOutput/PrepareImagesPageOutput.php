@@ -6,10 +6,10 @@ use App\Model\Read\Image;
 
 interface PrepareImagesPageOutput {
 
+	public function isAuthenticated(): bool;
+
 	/**
-	 * PrepareImagesPageOutput constructor.
-	 * @param bool $isAuthenticated
-	 * @param Image[] $images
+	 * @return Image[]
 	 */
-	public function __construct(bool $isAuthenticated, array $images = []);
+	public function getImages(): array;
 }
