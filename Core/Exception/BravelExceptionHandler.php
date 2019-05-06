@@ -24,7 +24,7 @@ class BravelExceptionHandler extends \Exception implements BravelException {
             return $this->e->handle($isDebugMode);
         }
 
-        $status_code = Di::get(StatusCode::class)->setCode(500)->setText('Internal Server Error');
+        Di::get(StatusCode::class)->setCode(500)->setText('Internal Server Error');
         $main_message = "{$this->e->getMessage()} in {$this->e->getfile()} line {$this->e->getLine()} code {$this->e->getCode()}";
         $message_stack = array();
         foreach ($this->e->getTrace() as $trace) {
@@ -36,7 +36,6 @@ class BravelExceptionHandler extends \Exception implements BravelException {
             $message_stack[] = $message;
         }
 
-        $content = Di::get(View::class)->render('error/handler', ['main_message' => $main_message, 'message_stack' => $message_stack]);
-        Di::set(Response::class, Di::get(Response::class)->setStatusCode($status_code)->setContent($content));
+        Di::get(View::class)->render('error/handler', ['main_message' => $main_message, 'message_stack' => $message_stack]);
     }
 }
