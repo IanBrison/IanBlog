@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Infrastructure\OutputPresenter;
+namespace App\Infrastructure\Presenter;
 
 use Core\Presenter\BasicViewPresenter;
 use Core\Presenter\ViewPresenter;

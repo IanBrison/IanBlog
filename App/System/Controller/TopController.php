@@ -2,7 +2,7 @@
 
 namespace App\System\Controller;
 
-use App\Infrastructure\OutputPresenter\TopPagePresenter;
+use App\Infrastructure\Presenter\TopPagePresenter;
 use Core\Controller\Controller;
 use Core\Di\DiContainer as Di;
 
