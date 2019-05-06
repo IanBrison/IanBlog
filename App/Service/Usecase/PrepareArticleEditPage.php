@@ -5,6 +5,8 @@ namespace App\Service\Usecase;
 use App\Service\Repository\Read\ArticleRepository;
 use App\Service\Repository\Read\AuthRepository;
 use App\Service\UsecaseInput\PrepareArticleEditPageInput;
+use App\Service\UsecaseOutput\Impls\PrepareArticleEditPageOutput\ArticleEditPageInfo;
+use App\Service\UsecaseOutput\Impls\PrepareArticleEditPageOutput\IsNotAuthenticated;
 use App\Service\UsecaseOutput\PrepareArticleEditPageOutput;
 use Core\Di\DiContainer as Di;
 
@@ -18,11 +20,11 @@ class PrepareArticleEditPage {
 
 	public function execute(): PrepareArticleEditPageOutput {
 		if (!Di::get(AuthRepository::class)->isAuthenticated()) {
-			return Di::get(PrepareArticleEditPageOutput::class, false);
+			return new IsNotAuthenticated();
 		}
 
 		$articleId = $this->input->getArticleId();
 		$article = Di::get(ArticleRepository::class)->getById($articleId);
-		return Di::get(PrepareArticleEditPageOutput::class, true, $article);
+		return new ArticleEditPageInfo($article);
 	}
 }

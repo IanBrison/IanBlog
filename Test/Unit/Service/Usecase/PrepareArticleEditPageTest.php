@@ -29,12 +29,11 @@ class PrepareArticleEditPageTest extends TestCase {
 			->with($articleId)
 			->andReturn($article);
 		Di::mock(ArticleRepository::class, $articleRepository);
-		$output = \Mockery::mock(PrepareArticleEditPageOutput::class);
-		Di::mockWithInput(PrepareArticleEditPageOutput::class, $output, true, $article);
 
 		$usecase = new PrepareArticleEditPage($input);
-		$presenter = $usecase->execute();
-		$this->assertSame($output, $presenter);
+		$output = $usecase->execute();
+		$this->assertTrue($output->isAuthenticated());
+		$this->assertSame($article, $output->getArticle());
 	}
 
 	/**
@@ -45,11 +44,9 @@ class PrepareArticleEditPageTest extends TestCase {
 		$authRepository = \Mockery::mock(AuthRepository::class);
 		$authRepository->shouldReceive('isAuthenticated')->andReturn(false);
 		Di::mock(AuthRepository::class, $authRepository);
-		$output = \Mockery::mock(PrepareArticleEditPageOutput::class);
-		Di::mockWithInput(PrepareArticleEditPageOutput::class, $output, false);
 
 		$usecase = new PrepareArticleEditPage($input);
-		$presenter = $usecase->execute();
-		$this->assertSame($output, $presenter);
+		$output = $usecase->execute();
+		$this->assertFalse($output->isAuthenticated());
 	}
 }
