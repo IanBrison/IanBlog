@@ -8,14 +8,13 @@ use App\Model\Write\Draft\CreateDraft as CreateDraftModel;
 use App\Service\Repository\Write\DraftRepository;
 use App\Service\UsecaseInput\CreateDraftInput;
 use App\Service\UsecaseOutput\CreateDraftOutput;
+use App\Service\UsecaseOutput\Impls\CreateDraftOutput\DraftInfo;
+use App\Service\UsecaseOutput\Impls\CreateDraftOutput\InputError;
+use App\Service\UsecaseOutput\Impls\CreateDraftOutput\SavingError;
 use App\System\Exception\UnacceptableSettingException;
 use Core\Di\DiContainer as Di;
 
 class CreateDraft {
-
-	const NO_ERROR = 0;
-	const INPUT_ERROR = 1;
-	const SAVING_ERROR = 2;
 
 	private $input;
 
@@ -28,15 +27,15 @@ class CreateDraft {
 			$title = new Title($this->input->getTitleInput());
 			$content = new Content($this->input->getContentInput());
 		} catch (UnacceptableSettingException $e) {
-			return Di::get(CreateDraftOutput::class, self::INPUT_ERROR);
+			return new InputError();
 		}
 
 		$createDraft = new CreateDraftModel($title, $content);
 		try {
 			$draft = Di::get(DraftRepository::class)->create($createDraft);
 		} catch (\Exception $e) {
-			return Di::get(CreateDraftOutput::class, self::SAVING_ERROR);
+			return new SavingError();
 		}
-		return Di::get(CreateDraftOutput::class, self::NO_ERROR, $draft);
+		return new DraftInfo($draft);
 	}
 }

@@ -6,5 +6,12 @@ use App\Model\Read\Draft;
 
 interface CreateDraftOutput {
 
-	public function __construct(int $errorCode, ?Draft $draft = null);
+	const INPUT_ERROR = 1;
+	const SAVING_ERROR = 2;
+
+	public function hasError(): bool;
+
+	public function getErrorCode(): int;
+
+	public function getDraft(): Draft;
 }
