@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Service\UsecaseOutput\Impls\PrepareAdminPage;
+namespace App\Service\UsecaseOutput\Impls\PrepareAdminPageOutput;
 
 use App\Model\Read\Article;
 use App\Service\UsecaseOutput\PrepareAdminPageOutput;

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Service\UsecaseOutput\Impls\AttemptLogin;
+namespace App\Service\UsecaseOutput\Impls\AttemptLoginOutput;
 
 use App\Service\UsecaseOutput\AttemptLoginOutput;
 

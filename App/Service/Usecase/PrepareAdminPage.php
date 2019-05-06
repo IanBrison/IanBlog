@@ -4,8 +4,8 @@ namespace App\Service\Usecase;
 
 use App\Service\Repository\Read\ArticleRepository;
 use App\Service\Repository\Read\AuthRepository;
-use App\Service\UsecaseOutput\Impls\PrepareAdminPage\AdminPageInfo;
-use App\Service\UsecaseOutput\Impls\PrepareAdminPage\IsNotAuthenticated;
+use App\Service\UsecaseOutput\Impls\PrepareAdminPageOutput\AdminPageInfo;
+use App\Service\UsecaseOutput\Impls\PrepareAdminPageOutput\IsNotAuthenticated;
 use App\Service\UsecaseOutput\PrepareAdminPageOutput;
 use Core\Di\DiContainer as Di;
 
