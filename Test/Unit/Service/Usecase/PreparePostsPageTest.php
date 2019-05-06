@@ -5,7 +5,6 @@ namespace Test\Unit\Service\Usecase;
 use App\Model\Read\Post;
 use App\Service\Repository\Read\PostRepository;
 use App\Service\Usecase\PreparePostsPage;
-use App\Service\UsecaseInput\PreparePostsPageInput;
 use App\Service\UsecaseOutput\PreparePostsPageOutput;
 use Core\Di\DiContainer as Di;
 use Test\TestCase;
@@ -16,7 +15,6 @@ class PreparePostsPageTest extends TestCase {
 	 * @test
 	 */
 	public function execute() {
-		$input = \Mockery::mock(PreparePostsPageInput::class);
 		$post = \Mockery::mock(Post::class);
 		$posts = [$post, $post, $post];
 		$postRepository = \Mockery::mock(PostRepository::class);
@@ -25,7 +23,7 @@ class PreparePostsPageTest extends TestCase {
 		$output = \Mockery::mock(PreparePostsPageOutput::class);
 		Di::mockWithInput(PreparePostsPageOutput::class, $output, $posts);
 
-		$usecase = new PreparePostsPage($input);
+		$usecase = new PreparePostsPage();
 		$presenter = $usecase->execute();
 		$this->assertSame($output, $presenter);
 	}

@@ -6,7 +6,6 @@ use App\Model\Read\Image;
 use App\Service\Repository\Read\AuthRepository;
 use App\Service\Repository\Read\ImageRepository;
 use App\Service\Usecase\PrepareImagesPage;
-use App\Service\UsecaseInput\PrepareImagesPageInput;
 use App\Service\UsecaseOutput\PrepareImagesPageOutput;
 use Core\Di\DiContainer as Di;
 use Test\TestCase;
@@ -17,7 +16,6 @@ class PrepareImagesPageTest extends TestCase {
 	 * @test
 	 */
 	public function execute() {
-		$input = \Mockery::mock(PrepareImagesPageInput::class);
 		$authRepository = \Mockery::mock(AuthRepository::class);
 		$authRepository->shouldReceive('isAuthenticated')->andReturn(true);
 		Di::mock(AuthRepository::class, $authRepository);
@@ -29,7 +27,7 @@ class PrepareImagesPageTest extends TestCase {
 		$output = \Mockery::mock(PrepareImagesPageOutput::class);
 		Di::mockWithInput(PrepareImagesPageOutput::class, $output, true, $images);
 
-		$usecase = new PrepareImagesPage($input);
+		$usecase = new PrepareImagesPage();
 		$presenter = $usecase->execute();
 		$this->assertSame($output, $presenter);
 	}
@@ -38,14 +36,13 @@ class PrepareImagesPageTest extends TestCase {
 	 * @test
 	 */
 	public function executeWithNotAuthenticated() {
-		$input = \Mockery::mock(PrepareImagesPageInput::class);
 		$authRepository = \Mockery::mock(AuthRepository::class);
 		$authRepository->shouldReceive('isAuthenticated')->andReturn(false);
 		Di::mock(AuthRepository::class, $authRepository);
 		$output = \Mockery::mock(PrepareImagesPageOutput::class);
 		Di::mockWithInput(PrepareImagesPageOutput::class, $output, false);
 
-		$usecase = new PrepareImagesPage($input);
+		$usecase = new PrepareImagesPage();
 		$presenter = $usecase->execute();
 		$this->assertSame($output, $presenter);
 	}
