@@ -6,5 +6,12 @@ use App\Model\Read\Post;
 
 interface CreatePostOutput {
 
-	public function __construct(int $errorCode, ?Post $post = null);
+	const INPUT_ERROR = 1;
+	const SAVING_ERROR = 2;
+
+	public function hasError(): bool;
+
+	public function getErrorCode(): int;
+
+	public function getPost(): Post;
 }

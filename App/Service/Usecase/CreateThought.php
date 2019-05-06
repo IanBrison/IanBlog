@@ -9,14 +9,13 @@ use App\Model\Write\Thought\CreateThought as CreateThoughtModel;
 use App\Service\Repository\Write\ThoughtRepository;
 use App\Service\UsecaseInput\CreateThoughtInput;
 use App\Service\UsecaseOutput\CreateThoughtOutput;
+use App\Service\UsecaseOutput\Impls\CreateThoughtOutput\InputError;
+use App\Service\UsecaseOutput\Impls\CreateThoughtOutput\SavingError;
+use App\Service\UsecaseOutput\Impls\CreateThoughtOutput\ThoughtInfo;
 use App\System\Exception\UnacceptableSettingException;
 use Core\Di\DiContainer as Di;
 
 class CreateThought {
-
-	const NO_ERROR = 0;
-	const INPUT_ERROR = 1;
-	const SAVING_ERROR = 2;
 
 	private $input;
 
@@ -30,15 +29,15 @@ class CreateThought {
 			$content = new Content($this->input->getContentInput());
 			$key = new Key($this->input->getKeyInput());
 		} catch (UnacceptableSettingException $e) {
-			return Di::get(CreateThoughtOutput::class, self::INPUT_ERROR);
+			return new InputError();
 		}
 
 		$createThought = new CreateThoughtModel($title, $content, $key);
 		try {
 			$thought = Di::get(ThoughtRepository::class)->create($createThought);
 		} catch (\Exception $e) {
-			return Di::get(CreateThoughtOutput::class, self::SAVING_ERROR);
+			return new SavingError();
 		}
-		return Di::get(CreateThoughtOutput::class, self::NO_ERROR, $thought);
+		return new ThoughtInfo($thought);
 	}
 }

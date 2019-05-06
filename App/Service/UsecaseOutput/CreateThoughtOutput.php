@@ -6,5 +6,12 @@ use App\Model\Read\Thought;
 
 interface CreateThoughtOutput {
 
-	public function __construct(int $errorCode, ?Thought $thought = null);
+	const INPUT_ERROR = 1;
+	const SAVING_ERROR = 2;
+
+	public function hasError(): bool;
+
+	public function getErrorCode(): int;
+
+	public function getThought(): Thought;
 }
