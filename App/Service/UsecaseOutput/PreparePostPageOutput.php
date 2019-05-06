@@ -6,5 +6,5 @@ use App\Model\Read\Post;
 
 interface PreparePostPageOutput {
 
-	public function __construct(Post $post);
+	public function getPost(): Post;
 }

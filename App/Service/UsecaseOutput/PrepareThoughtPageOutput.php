@@ -6,5 +6,5 @@ use App\Model\Read\Thought;
 
 interface PrepareThoughtPageOutput {
 
-	public function __construct(Thought $thought);
+	public function getThought(): Thought;
 }

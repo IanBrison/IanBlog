@@ -7,8 +7,7 @@ use App\Model\Read\Thought;
 interface PrepareThoughtsPageOutput {
 
 	/**
-	 * PrepareThoughtsPageOutput constructor.
-	 * @param Thought[] $thoughts
+	 * @return Thought[]
 	 */
-	public function __construct(array $thoughts);
+	public function getThoughts(): array;
 }

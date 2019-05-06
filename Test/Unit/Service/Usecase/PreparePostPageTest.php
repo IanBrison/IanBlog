@@ -6,7 +6,6 @@ use App\Model\Read\Post;
 use App\Service\Repository\Read\PostRepository;
 use App\Service\Usecase\PreparePostPage;
 use App\Service\UsecaseInput\PreparePostPageInput;
-use App\Service\UsecaseOutput\PreparePostPageOutput;
 use Core\Di\DiContainer as Di;
 use Test\TestCase;
 
@@ -25,11 +24,9 @@ class PreparePostPageTest extends TestCase {
 			->with($postId)
 			->andReturn($post);
 		Di::mock(PostRepository::class, $postRepository);
-		$output = \Mockery::mock(PreparePostPageOutput::class);
-		Di::mockWithInput(PreparePostPageOutput::class, $output, $post);
 
 		$usecase = new PreparePostPage($input);
-		$presenter = $usecase->execute();
-		$this->assertSame($output, $presenter);
+		$output = $usecase->execute();
+		$this->assertSame($post, $output->getPost());
 	}
 }

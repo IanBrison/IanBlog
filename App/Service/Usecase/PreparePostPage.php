@@ -4,6 +4,7 @@ namespace App\Service\Usecase;
 
 use App\Service\Repository\Read\PostRepository;
 use App\Service\UsecaseInput\PreparePostPageInput;
+use App\Service\UsecaseOutput\Impls\PreparePostPageOutput\PostPageInfo;
 use App\Service\UsecaseOutput\PreparePostPageOutput;
 use Core\Di\DiContainer as Di;
 
@@ -18,6 +19,6 @@ class PreparePostPage {
 	public function execute(): PreparePostPageOutput {
 		$postId = $this->input->getPostId();
 		$post = Di::get(PostRepository::class)->getById($postId);
-		return Di::get(PreparePostPageOutput::class, $post);
+		return new PostPageInfo($post);
 	}
 }

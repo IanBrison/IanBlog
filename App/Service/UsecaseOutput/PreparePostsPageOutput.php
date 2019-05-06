@@ -7,8 +7,7 @@ use App\Model\Read\Post;
 interface PreparePostsPageOutput {
 
 	/**
-	 * PreparePostsPageOutput constructor.
-	 * @param Post[] $posts
+	 * @return Post[]
 	 */
-	public function __construct(array $posts);
+	public function getPosts(): array;
 }
