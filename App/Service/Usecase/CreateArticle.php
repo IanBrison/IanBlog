@@ -9,6 +9,8 @@ use App\Service\UsecaseInput\Impls\CreatePostInput\FromCreateArticle as CreatePo
 use App\Service\UsecaseInput\Impls\CreateThoughtInput\FromCreateArticle as CreateThoughtInput;
 use App\Service\UsecaseOutput\CreateArticleOutput;
 use App\Service\UsecaseOutput\CreateDraftOutput;
+use App\Service\UsecaseOutput\CreatePostOutput;
+use App\Service\UsecaseOutput\CreateThoughtOutput;
 use App\Service\UsecaseOutput\Impls\CreateArticleOutput\ArticleInfo;
 use App\Service\UsecaseOutput\Impls\CreateArticleOutput\InputError;
 use App\Service\UsecaseOutput\Impls\CreateArticleOutput\SavingError;
@@ -50,10 +52,10 @@ class CreateArticle {
 			if (!$output->hasError()) {
 				return new ArticleInfo($output->getPost());
 			}
-			if ($output->getErrorCode() === CreateDraftOutput::INPUT_ERROR) {
+			if ($output->getErrorCode() === CreatePostOutput::INPUT_ERROR) {
 				return new InputError();
 			}
-			if ($output->getErrorCode() === CreateDraftOutput::SAVING_ERROR) {
+			if ($output->getErrorCode() === CreatePostOutput::SAVING_ERROR) {
 				return new SavingError();
 			}
 		} else {
@@ -64,10 +66,10 @@ class CreateArticle {
 			if (!$output->hasError()) {
 				return new ArticleInfo($output->getThought());
 			}
-			if ($output->getErrorCode() === CreateDraftOutput::INPUT_ERROR) {
+			if ($output->getErrorCode() === CreateThoughtOutput::INPUT_ERROR) {
 				return new InputError();
 			}
-			if ($output->getErrorCode() === CreateDraftOutput::SAVING_ERROR) {
+			if ($output->getErrorCode() === CreateThoughtOutput::SAVING_ERROR) {
 				return new SavingError();
 			}
 		}
