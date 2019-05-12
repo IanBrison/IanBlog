@@ -18,5 +18,6 @@ return [
     ],
 
     'aliases' => [
+        App\Service\Repository\Read\AuthRepository::class => App\Infrastructure\Repository\Query\AuthQuery::class,
     ]
 ];
