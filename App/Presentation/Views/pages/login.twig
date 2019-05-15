@@ -2,7 +2,9 @@
 
 {% block content %}
     <h1>ここはログインページ</h1>
-    <form action="" method="POST">
-        <input type="text">
+    <form action="{{ vp.attemptLoginUrl }}" method="POST">
+        {{ vp.presentCsrfTokenView | raw }}
+        <input type="password" name="password"/>
+        <button type="submit">ログイン</button>
     </form>
 {% endblock %}
