@@ -2,6 +2,7 @@
 
 namespace App\Infrastructure\Presenter\Pages;
 
+use App\Infrastructure\InputConverter\AttemptLoginInput;
 use App\Service\UsecaseOutput\PrepareLoginPageOutput;
 use Core\Presenter\BasicUrlPresenter;
 use Core\Presenter\BasicViewPresenter;
@@ -28,4 +29,8 @@ class LoginPagePresenter implements ViewPresenter, UrlPresenter {
     public function attemptLoginUrl(): string {
 		return '/login';
 	}
+
+	public function passwordFormName(): string {
+	    return AttemptLoginInput::PASSWORD_INPUT_KEY;
+    }
 }
