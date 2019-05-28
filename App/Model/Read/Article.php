@@ -12,6 +12,4 @@ interface Article {
 	public function title(): Title;
 
 	public function content(): Content;
-
-	public function isPublished(): bool;
 }
