@@ -18,7 +18,11 @@
     },
     "require": {
         "twig/twig": "^2.0",
-        "vlucas/phpdotenv": "^3.0"
+        "vlucas/phpdotenv": "^3.0",
+        "ext-pdo": "*",
+        "ext-json": "*",
+        "fzaninotto/faker": "^1.8",
+        "nesbot/carbon": "^2.18"
     },
     "autoload": {
         "psr-4": {
