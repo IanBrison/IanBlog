@@ -1,0 +1,5 @@
+<ul>
+    {% for presenter in vp.listItemPresenters %}
+        {{ presenter.presentView | raw }}
+    {% endfor %}
+</ul>
