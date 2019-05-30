@@ -17,6 +17,6 @@ class AttemptLoginPresenter implements UrlPresenter {
     }
 
     public function redirectUrl(): string {
-        return $this->info->isNowLogin() ? '/' : '/login';
+        return $this->info->isNowLogin() ? '/admin' : '/login';
     }
 }
