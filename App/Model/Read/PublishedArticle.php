@@ -2,4 +2,9 @@
 
 namespace App\Model\Read;
 
-interface PublishedArticle extends Article {}
+use App\Model\ValueObject\Date;
+
+interface PublishedArticle extends Article {
+
+    public function publishedAt(): Date;
+}
