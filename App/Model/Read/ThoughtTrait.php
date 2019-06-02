@@ -12,17 +12,11 @@ trait ThoughtTrait {
 
 	public abstract function id(): int;
 
-    public abstract function title(): Title;
-
-    public abstract function content(): Content;
-
-    public abstract function key(): Key;
-
-    public function update(): UpdateThought {
-        return new UpdateThought($this->id(), $this->title(), $this->content(), $this->key());
+    public function update(Title $title, Content $content, Key $key): UpdateThought {
+        return new UpdateThought($this->id(), $title, $content, $key);
     }
 
-    public function renew(): RenewThought {
-        return new RenewThought($this->id(), $this->title(), $this->content(), $this->key());
+    public function renew(Title $title, Content $content, Key $key): RenewThought {
+        return new RenewThought($this->id(), $title, $content, $key);
     }
 }

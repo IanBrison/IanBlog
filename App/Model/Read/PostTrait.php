@@ -10,11 +10,7 @@ trait PostTrait {
 
 	public abstract function id(): int;
 
-    public abstract function title(): Title;
-
-    public abstract function content(): Content;
-
-    public function update(): UpdatePost {
-        return new UpdatePost($this->id(), $this->title(), $this->content());
+    public function update(Title $title, Content $content): UpdatePost {
+        return new UpdatePost($this->id(), $title, $content);
     }
 }

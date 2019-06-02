@@ -14,20 +14,16 @@ trait DraftTrait {
 
 	public abstract function id(): int;
 
-    public abstract function title(): Title;
-
-    public abstract function content(): Content;
-
-    public function update(): UpdateDraft {
-        return new UpdateDraft($this->id(), $this->title(), $this->content());
+    public function update(Title $title, Content $content): UpdateDraft {
+        return new UpdateDraft($this->id(), $title, $content);
     }
 
-    public function publishAsPost(): CreatePost {
-        return new CreatePost($this->title(), $this->content());
+    public function publishAsPost(Title $title, Content $content): CreatePost {
+        return new CreatePost($title, $content);
     }
 
-    public function publishAsThought(Key $key): CreateThought {
-        return new CreateThought($this->title(), $this->content(), $key);
+    public function publishAsThought(Title $title, Content $content, Key $key): CreateThought {
+        return new CreateThought($title, $content, $key);
     }
 
     public function delete(): DeleteDraft {
