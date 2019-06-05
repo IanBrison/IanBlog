@@ -3,11 +3,14 @@
 namespace App\Infrastructure\Repository\Entity\Mocks;
 
 use App\Model\Read\Post;
+use App\Model\Read\PostTrait;
 use App\Model\ValueObject\Content;
 use App\Model\ValueObject\Date;
 use App\Model\ValueObject\Title;
 
 class PostEntity implements Post {
+
+    use PostTrait;
 
     private $id;
     private $title;

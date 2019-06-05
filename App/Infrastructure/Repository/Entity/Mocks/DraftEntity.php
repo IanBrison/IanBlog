@@ -3,10 +3,13 @@
 namespace App\Infrastructure\Repository\Entity\Mocks;
 
 use App\Model\Read\Draft;
+use App\Model\Read\DraftTrait;
 use App\Model\ValueObject\Content;
 use App\Model\ValueObject\Title;
 
 class DraftEntity implements Draft {
+
+    use DraftTrait;
 
     private $id;
     private $title;

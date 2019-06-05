@@ -63,6 +63,6 @@ class ArticleQuery implements ArticleRepository {
             return new PostEntity($id, $title, $content, $date);
         }
         $key = new Key($this->faker->word);
-        return new ThoughtEntity($id, $title, $content, $key, $date);
+        return new ThoughtEntity($id, $title, $content, $key, $date, $date);
     }
 }
