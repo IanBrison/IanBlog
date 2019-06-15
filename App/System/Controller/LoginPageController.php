@@ -15,7 +15,6 @@ class LoginPageController extends Controller {
 
         $presenter = new LoginPagePresenter($output);
 
-		$presenter->isAlreadyLogin() ?
-            $this->url($presenter) : $this->view($presenter);
+		$presenter->present();
 	}
 }

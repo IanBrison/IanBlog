@@ -20,6 +20,6 @@ class LoginAttemptController extends Controller {
 		$output = $usecase->execute();
 		$presenter = new AttemptLoginPresenter($output);
 
-		$this->url($presenter);
+		$presenter->present();
 	}
 }

@@ -10,6 +10,6 @@ class TopController extends Controller {
     public function getTopPage() {
         $presenter = new TopPagePresenter();
 
-        $this->view($presenter);
+        $presenter->present();
     }
 }

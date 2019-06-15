@@ -15,7 +15,6 @@ class AdminPageController extends Controller {
 
         $presenter = new AdminPagePresenter($output);
 
-        $presenter->isAuthenticated() ?
-            $this->view($presenter) : $this->url($presenter);
+        $presenter->present();
     }
 }
