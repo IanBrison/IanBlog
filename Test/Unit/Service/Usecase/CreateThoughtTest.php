@@ -4,10 +4,12 @@ namespace Test\Unit\Service\Usecase;
 
 use App\Model\Read\Thought;
 use App\Service\Repository\Write\ThoughtRepository;
-use App\Service\Usecase\CreateThought;
+use App\Service\Usecase\Impls\CreateThoughtUsecase;
 use App\Service\UsecaseInput\CreateThoughtInput;
 use App\Service\UsecaseOutput\CreateThoughtOutput;
-use Core\Di\DiContainer as Di;
+use App\Service\DiContainer as Di;
+use Exception;
+use Mockery;
 use Test\TestCase;
 
 class CreateThoughtTest extends TestCase {
@@ -19,18 +21,18 @@ class CreateThoughtTest extends TestCase {
 		$titleInput = 'title';
 		$contentInput = 'content';
 		$keyInput = 'key';
-		$input = \Mockery::mock(CreateThoughtInput::class);
+		$input = Mockery::mock(CreateThoughtInput::class);
 		$input->shouldReceive([
 			'getTitleInput' => $titleInput,
 			'getContentInput' => $contentInput,
 			'getKeyInput' => $keyInput,
 		]);
-		$thought = \Mockery::mock(Thought::class);
-		$thoughtRepository = \Mockery::mock(ThoughtRepository::class);
+		$thought = Mockery::mock(Thought::class);
+		$thoughtRepository = Mockery::mock(ThoughtRepository::class);
 		$thoughtRepository->shouldReceive('create')->andReturn($thought);
 		Di::mock(ThoughtRepository::class, $thoughtRepository);
 
-		$usecase = new CreateThought($input);
+		$usecase = new CreateThoughtUsecase($input);
 		$output = $usecase->execute();
 		$this->assertFalse($output->hasError());
 		$this->assertSame($thought, $output->getThought());
@@ -43,17 +45,17 @@ class CreateThoughtTest extends TestCase {
 		$titleInput = 'title';
 		$contentInput = 'content';
 		$keyInput = 'key';
-		$input = \Mockery::mock(CreateThoughtInput::class);
+		$input = Mockery::mock(CreateThoughtInput::class);
 		$input->shouldReceive([
 			'getTitleInput' => $titleInput,
 			'getContentInput' => $contentInput,
 			'getKeyInput' => $keyInput,
 		]);
-		$thoughtRepository = \Mockery::mock(ThoughtRepository::class);
-		$thoughtRepository->shouldReceive('create')->andThrow(\Exception::class);
+		$thoughtRepository = Mockery::mock(ThoughtRepository::class);
+		$thoughtRepository->shouldReceive('create')->andThrow(Exception::class);
 		Di::mock(ThoughtRepository::class, $thoughtRepository);
 
-		$usecase = new CreateThought($input);
+		$usecase = new CreateThoughtUsecase($input);
 		$output = $usecase->execute();
 		$this->assertTrue($output->hasError());
 		$this->assertSame(CreateThoughtOutput::SAVING_ERROR, $output->getErrorCode());
@@ -64,12 +66,12 @@ class CreateThoughtTest extends TestCase {
 	 */
 	public function executeWithInputError() {
 		$titleInput = '';
-		$input = \Mockery::mock(CreateThoughtInput::class);
+		$input = Mockery::mock(CreateThoughtInput::class);
 		$input->shouldReceive([
 			'getTitleInput' => $titleInput,
 		]);
 
-		$usecase = new CreateThought($input);
+		$usecase = new CreateThoughtUsecase($input);
 		$output = $usecase->execute();
 		$this->assertTrue($output->hasError());
 		$this->assertSame(CreateThoughtOutput::INPUT_ERROR, $output->getErrorCode());

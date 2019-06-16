@@ -5,9 +5,10 @@ namespace Test\Unit\Service\Usecase;
 use App\Model\Read\Image;
 use App\Service\Repository\Read\AuthRepository;
 use App\Service\Repository\Read\ImageRepository;
-use App\Service\Usecase\PrepareImagesPage;
+use App\Service\Usecase\Impls\PrepareImagesPageUsecase;
 use App\Service\UsecaseOutput\PrepareImagesPageOutput;
-use Core\Di\DiContainer as Di;
+use App\Service\DiContainer as Di;
+use Mockery;
 use Test\TestCase;
 
 class PrepareImagesPageTest extends TestCase {
@@ -16,16 +17,16 @@ class PrepareImagesPageTest extends TestCase {
 	 * @test
 	 */
 	public function execute() {
-		$authRepository = \Mockery::mock(AuthRepository::class);
+		$authRepository = Mockery::mock(AuthRepository::class);
 		$authRepository->shouldReceive('isAuthenticated')->andReturn(true);
 		Di::mock(AuthRepository::class, $authRepository);
-		$image = \Mockery::mock(Image::class);
+		$image = Mockery::mock(Image::class);
 		$images = [$image, $image, $image];
-		$imageRepository = \Mockery::mock(ImageRepository::class);
+		$imageRepository = Mockery::mock(ImageRepository::class);
 		$imageRepository->shouldReceive('getAll')->andReturn($images);
 		Di::mock(ImageRepository::class, $imageRepository);
 
-		$usecase = new PrepareImagesPage();
+		$usecase = new PrepareImagesPageUsecase();
 		$output = $usecase->execute();
 		$this->assertTrue($output->isAuthenticated());
 		$this->assertSame($images, $output->getImages());
@@ -35,13 +36,13 @@ class PrepareImagesPageTest extends TestCase {
 	 * @test
 	 */
 	public function executeWithNotAuthenticated() {
-		$authRepository = \Mockery::mock(AuthRepository::class);
+		$authRepository = Mockery::mock(AuthRepository::class);
 		$authRepository->shouldReceive('isAuthenticated')->andReturn(false);
 		Di::mock(AuthRepository::class, $authRepository);
-		$output = \Mockery::mock(PrepareImagesPageOutput::class);
+		$output = Mockery::mock(PrepareImagesPageOutput::class);
 		Di::mockWithInput(PrepareImagesPageOutput::class, $output, false);
 
-		$usecase = new PrepareImagesPage();
+		$usecase = new PrepareImagesPageUsecase();
 		$output = $usecase->execute();
 		$this->assertFalse($output->isAuthenticated());
 	}
