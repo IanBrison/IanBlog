@@ -5,7 +5,7 @@ namespace App\Service\Usecase;
 use App\Service\Repository\Read\AuthRepository;
 use App\Service\UsecaseOutput\Impls\PrepareLoginPageOutput\LoginStatus;
 use App\Service\UsecaseOutput\PrepareLoginPageOutput;
-use Core\Di\DiContainer as Di;
+use App\Service\DiContainer as Di;
 
 class PrepareLoginPage {
 

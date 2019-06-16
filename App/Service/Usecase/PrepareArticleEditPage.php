@@ -8,7 +8,7 @@ use App\Service\UsecaseInput\PrepareArticleEditPageInput;
 use App\Service\UsecaseOutput\Impls\PrepareArticleEditPageOutput\ArticleEditPageInfo;
 use App\Service\UsecaseOutput\Impls\PrepareArticleEditPageOutput\IsNotAuthenticated;
 use App\Service\UsecaseOutput\PrepareArticleEditPageOutput;
-use Core\Di\DiContainer as Di;
+use App\Service\DiContainer as Di;
 
 class PrepareArticleEditPage {
 

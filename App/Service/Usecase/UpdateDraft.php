@@ -13,7 +13,7 @@ use App\Service\UsecaseOutput\Impls\UpdateDraftOutput\InputError;
 use App\Service\UsecaseOutput\Impls\UpdateDraftOutput\SavingError;
 use App\Service\UsecaseOutput\UpdateDraftOutput;
 use App\System\Exception\UnacceptableSettingException;
-use Core\Di\DiContainer as Di;
+use App\Service\DiContainer as Di;
 use Exception;
 
 class UpdateDraft {

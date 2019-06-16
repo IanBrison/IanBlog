@@ -14,7 +14,7 @@ use App\Service\UsecaseOutput\Impls\UpdateThoughtOutput\SavingError;
 use App\Service\UsecaseOutput\Impls\UpdateThoughtOutput\ThoughtInfo;
 use App\Service\UsecaseOutput\UpdateThoughtOutput;
 use App\System\Exception\UnacceptableSettingException;
-use Core\Di\DiContainer as Di;
+use App\Service\DiContainer as Di;
 use Exception;
 
 class UpdateThought {

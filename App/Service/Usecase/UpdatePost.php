@@ -13,7 +13,7 @@ use App\Service\UsecaseOutput\Impls\UpdatePostOutput\PostInfo;
 use App\Service\UsecaseOutput\Impls\UpdatePostOutput\SavingError;
 use App\Service\UsecaseOutput\UpdatePostOutput;
 use App\System\Exception\UnacceptableSettingException;
-use Core\Di\DiContainer as Di;
+use App\Service\DiContainer as Di;
 use Exception;
 
 class UpdatePost {

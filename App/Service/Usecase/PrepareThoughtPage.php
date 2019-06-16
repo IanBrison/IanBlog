@@ -6,7 +6,7 @@ use App\Service\Repository\Read\ThoughtRepository;
 use App\Service\UsecaseInput\PrepareThoughtPageInput;
 use App\Service\UsecaseOutput\Impls\PrepareThoughtPageOutput\ThoughtPageInfo;
 use App\Service\UsecaseOutput\PrepareThoughtPageOutput;
-use Core\Di\DiContainer as Di;
+use App\Service\DiContainer as Di;
 
 class PrepareThoughtPage {
 

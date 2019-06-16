@@ -6,7 +6,7 @@ use App\Service\Repository\Read\PostRepository;
 use App\Service\UsecaseInput\PreparePostPageInput;
 use App\Service\UsecaseOutput\Impls\PreparePostPageOutput\PostPageInfo;
 use App\Service\UsecaseOutput\PreparePostPageOutput;
-use Core\Di\DiContainer as Di;
+use App\Service\DiContainer as Di;
 
 class PreparePostPage {
 

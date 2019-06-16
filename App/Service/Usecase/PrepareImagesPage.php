@@ -7,7 +7,7 @@ use App\Service\Repository\Read\ImageRepository;
 use App\Service\UsecaseOutput\Impls\PrepareImagesPageOutput\ImagesPageInfo;
 use App\Service\UsecaseOutput\Impls\PrepareImagesPageOutput\IsNotAuthenticated;
 use App\Service\UsecaseOutput\PrepareImagesPageOutput;
-use Core\Di\DiContainer as Di;
+use App\Service\DiContainer as Di;
 
 class PrepareImagesPage {
 

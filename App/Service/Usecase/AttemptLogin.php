@@ -6,7 +6,7 @@ use App\Service\Repository\Read\AuthRepository;
 use App\Service\UsecaseInput\AttemptLoginInput;
 use App\Service\UsecaseOutput\AttemptLoginOutput;
 use App\Service\UsecaseOutput\Impls\AttemptLoginOutput\AttemptResult;
-use Core\Di\DiContainer as Di;
+use App\Service\DiContainer as Di;
 
 class AttemptLogin {
 

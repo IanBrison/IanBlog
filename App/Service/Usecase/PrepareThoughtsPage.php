@@ -5,7 +5,7 @@ namespace App\Service\Usecase;
 use App\Service\Repository\Read\ThoughtRepository;
 use App\Service\UsecaseOutput\Impls\PrepareThoughtsPageOutput\ThoughtsPageInfo;
 use App\Service\UsecaseOutput\PrepareThoughtsPageOutput;
-use Core\Di\DiContainer as Di;
+use App\Service\DiContainer as Di;
 
 class PrepareThoughtsPage {
 

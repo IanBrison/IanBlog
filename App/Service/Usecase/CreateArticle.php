@@ -14,7 +14,7 @@ use App\Service\UsecaseOutput\CreateThoughtOutput;
 use App\Service\UsecaseOutput\Impls\CreateArticleOutput\ArticleInfo;
 use App\Service\UsecaseOutput\Impls\CreateArticleOutput\InputError;
 use App\Service\UsecaseOutput\Impls\CreateArticleOutput\SavingError;
-use Core\Di\DiContainer as Di;
+use App\Service\DiContainer as Di;
 use Exception;
 
 class CreateArticle {

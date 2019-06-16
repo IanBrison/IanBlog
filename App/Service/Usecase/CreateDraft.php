@@ -12,7 +12,7 @@ use App\Service\UsecaseOutput\Impls\CreateDraftOutput\DraftInfo;
 use App\Service\UsecaseOutput\Impls\CreateDraftOutput\InputError;
 use App\Service\UsecaseOutput\Impls\CreateDraftOutput\SavingError;
 use App\System\Exception\UnacceptableSettingException;
-use Core\Di\DiContainer as Di;
+use App\Service\DiContainer as Di;
 
 class CreateDraft {
 

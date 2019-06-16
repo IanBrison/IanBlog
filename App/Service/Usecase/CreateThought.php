@@ -13,7 +13,7 @@ use App\Service\UsecaseOutput\Impls\CreateThoughtOutput\InputError;
 use App\Service\UsecaseOutput\Impls\CreateThoughtOutput\SavingError;
 use App\Service\UsecaseOutput\Impls\CreateThoughtOutput\ThoughtInfo;
 use App\System\Exception\UnacceptableSettingException;
-use Core\Di\DiContainer as Di;
+use App\Service\DiContainer as Di;
 
 class CreateThought {
 

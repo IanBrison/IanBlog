@@ -12,7 +12,7 @@ use App\Service\UsecaseOutput\Impls\CreatePostOutput\InputError;
 use App\Service\UsecaseOutput\Impls\CreatePostOutput\PostInfo;
 use App\Service\UsecaseOutput\Impls\CreatePostOutput\SavingError;
 use App\System\Exception\UnacceptableSettingException;
-use Core\Di\DiContainer as Di;
+use App\Service\DiContainer as Di;
 
 class CreatePost {
 

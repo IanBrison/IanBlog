@@ -5,7 +5,7 @@ namespace App\Service\Usecase;
 use App\Service\Repository\Read\PostRepository;
 use App\Service\UsecaseOutput\Impls\PreparePostsPageOutput\PostsPageInfo;
 use App\Service\UsecaseOutput\PreparePostsPageOutput;
-use Core\Di\DiContainer as Di;
+use App\Service\DiContainer as Di;
 
 class PreparePostsPage {
 
