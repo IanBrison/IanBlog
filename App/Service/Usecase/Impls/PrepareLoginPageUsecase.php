@@ -6,12 +6,17 @@ use App\Service\Repository\Read\AuthRepository;
 use App\Service\Usecase\PrepareLoginPage;
 use App\Service\UsecaseOutput\Impls\PrepareLoginPageOutput\LoginStatus;
 use App\Service\UsecaseOutput\PrepareLoginPageOutput;
-use App\Service\DiContainer as Di;
 
 class PrepareLoginPageUsecase implements PrepareLoginPage {
 
-	public function execute(): PrepareLoginPageOutput {
-		if (Di::get(AuthRepository::class)->isAuthenticated()) {
+    private $authRepository;
+
+    public function __construct(AuthRepository $authRepository) {
+        $this->authRepository = $authRepository;
+    }
+
+    public function execute(): PrepareLoginPageOutput {
+		if ($this->authRepository->isAuthenticated()) {
 			return new LoginStatus(true);
 		}
 		return new LoginStatus(false);

@@ -7,7 +7,5 @@ use App\Service\UsecaseOutput\PrepareThoughtPageOutput;
 
 interface PrepareThoughtPage {
 
-    public function __construct(PrepareThoughtPageInput $input);
-
-    public function execute(): PrepareThoughtPageOutput;
+    public function execute(PrepareThoughtPageInput $input): PrepareThoughtPageOutput;
 }

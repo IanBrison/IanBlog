@@ -7,19 +7,24 @@ use App\Service\Usecase\PrepareThoughtPage;
 use App\Service\UsecaseInput\PrepareThoughtPageInput;
 use App\Service\UsecaseOutput\Impls\PrepareThoughtPageOutput\ThoughtPageInfo;
 use App\Service\UsecaseOutput\PrepareThoughtPageOutput;
-use App\Service\DiContainer as Di;
+use App\System\Exception\DataNotFoundException;
 
 class PrepareThoughtPageUsecase implements PrepareThoughtPage {
 
-	private $input;
+	private $thoughtRepository;
 
-	public function __construct(PrepareThoughtPageInput $input) {
-		$this->input = $input;
+	public function __construct(ThoughtRepository $thoughtRepository) {
+		$this->thoughtRepository = $thoughtRepository;
 	}
 
-	public function execute(): PrepareThoughtPageOutput {
-		$thoughtId = $this->input->getThoughtId();
-		$thought = Di::get(ThoughtRepository::class)->getById($thoughtId);
+    /**
+     * @param PrepareThoughtPageInput $input
+     * @return PrepareThoughtPageOutput
+     * @throws DataNotFoundException
+     */
+    public function execute(PrepareThoughtPageInput $input): PrepareThoughtPageOutput {
+		$thoughtId = $input->getThoughtId();
+		$thought = $this->thoughtRepository->getById($thoughtId);
 		return new ThoughtPageInfo($thought);
 	}
 }

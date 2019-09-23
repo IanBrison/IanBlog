@@ -7,7 +7,5 @@ use App\Service\UsecaseOutput\PrepareArticleEditPageOutput;
 
 interface PrepareArticleEditPage {
 
-    public function __construct(PrepareArticleEditPageInput $input);
-
-    public function execute(): PrepareArticleEditPageOutput;
+    public function execute(PrepareArticleEditPageInput $input): PrepareArticleEditPageOutput;
 }

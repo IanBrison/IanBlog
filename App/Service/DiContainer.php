@@ -2,7 +2,12 @@
 
 namespace App\Service;
 
+use Closure;
 use Exception;
+use ReflectionClass;
+use ReflectionException;
+use ReflectionFunction;
+use ReflectionFunctionAbstract;
 
 class DiContainer {
 
@@ -51,15 +56,15 @@ class DiContainer {
 		self::$hasInitialized = true;
 	}
 
-	/**
-	 * get the injected instance
-	 * @param string $dependencyName
-	 * @param array $args
-	 * @return mixed
-	 */
+    /**
+     * get the injected instance
+     * @param string $dependencyName
+     * @param array  $args
+     * @return mixed
+     * @throws ReflectionException
+     */
 	public static function get(string $dependencyName, ...$args) {
-		if (self::$isTestMode) return self::_getMock($dependencyName, ...$args);
-		return self::_get($dependencyName, ...$args);
+        return self::$isTestMode ? self::_getMock($dependencyName, ...$args) : self::_get($dependencyName, ...$args);
 	}
 
 	/**
@@ -74,18 +79,21 @@ class DiContainer {
 	/**
 	 * the get process
 	 * @param string $dependencyName
-	 * @param array $args
+	 * @param array  $args
 	 * @return mixed
+	 * @throws ReflectionException
 	 */
 	private static function _get(string $dependencyName, ...$args) {
-		// first if it is cached in the singleton array, give back that instance
+		// first, if it is cached in the singleton array, give back that instance
 		if (isset(self::$singletons[$dependencyName])) {
 			return self::$singletons[$dependencyName];
 		}
 
-		// if not cached, resolve the class name to use and then instantiate it
-		$className = self::$aliases[$dependencyName] ?? $dependencyName;
-		$instance = new $className(...$args);
+		// if not cached, resolve the dependency name to either call the closure or handle with the reflection class
+		$dependency = self::$aliases[$dependencyName] ?? $dependencyName;
+
+		// resolve the other dependencies and instantiate the dependency to be injected
+		$instance = self::_resolve($dependency, ...$args);
 
 		// if required to be cached as a singleton, use the set to add in the array
 		if (array_key_exists($dependencyName, self::$singletons)) {
@@ -94,6 +102,48 @@ class DiContainer {
 
 		return $instance;
 	}
+
+    /**
+     * @param       $dependency mixed
+     * @param array $args
+     * @return mixed|object
+     * @throws ReflectionException
+     */
+    private static function _resolve($dependency, ...$args) {
+        // create the reflection class
+        $reflectionClass = new ReflectionClass($dependency);
+
+        // return the instantiated class if no constructor declared (since there are no other dependencies)
+        if (is_null($reflectionClass->getConstructor())) {
+            return $reflectionClass->newInstance();
+        }
+
+		// get the function that does the construction
+		$constructionFunction = $dependency instanceof Closure ? new ReflectionFunction($dependency) : $reflectionClass->getConstructor();
+
+		// gather all the other parameters (dependencies)
+		$constructionParameters = !empty($args) ? $args : self::_aggregateConstructionParameters($constructionFunction);
+
+		// depending on the function, switch the way to call it
+		$instance = $constructionFunction->isClosure() ?
+			$constructionFunction->invokeArgs($constructionParameters) :
+			$constructionFunction->getDeclaringClass()->newInstanceArgs($constructionParameters);
+		return $instance;
+    }
+
+    /**
+     * @param ReflectionFunctionAbstract $constructionFunction
+     * @return array
+     * @throws ReflectionException
+     */
+    private static function _aggregateConstructionParameters(ReflectionFunctionAbstract $constructionFunction): array {
+        // fill in the construction parameters with the di container's injections
+		$constructionParameters = [];
+		foreach ($constructionFunction->getParameters() as $parameter) {
+			$constructionParameters[] = self::_get($parameter->getClass()->name);
+		}
+		return $constructionParameters;
+    }
 
 	/**
 	 * set the instance in the array
@@ -107,8 +157,9 @@ class DiContainer {
 	/**
 	 * the get process while in test mode
 	 * @param string $dependencyName
-	 * @param mixed ...$args
+	 * @param mixed  ...$args
 	 * @return mixed
+	 * @throws ReflectionException
 	 */
 	private static function _getMock(string $dependencyName, ...$args) {
 		// if a mock is set, get it from there

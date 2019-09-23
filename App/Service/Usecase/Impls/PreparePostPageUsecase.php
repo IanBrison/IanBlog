@@ -7,19 +7,24 @@ use App\Service\Usecase\PreparePostPage;
 use App\Service\UsecaseInput\PreparePostPageInput;
 use App\Service\UsecaseOutput\Impls\PreparePostPageOutput\PostPageInfo;
 use App\Service\UsecaseOutput\PreparePostPageOutput;
-use App\Service\DiContainer as Di;
+use App\System\Exception\DataNotFoundException;
 
 class PreparePostPageUsecase implements PreparePostPage {
 
-	private $input;
+	private $postRepository;
 
-	public function __construct(PreparePostPageInput $input) {
-		$this->input = $input;
+	public function __construct(PostRepository $postRepository) {
+		$this->postRepository = $postRepository;
 	}
 
-	public function execute(): PreparePostPageOutput {
-		$postId = $this->input->getPostId();
-		$post = Di::get(PostRepository::class)->getById($postId);
+    /**
+     * @param PreparePostPageInput $input
+     * @return PreparePostPageOutput
+     * @throws DataNotFoundException
+     */
+    public function execute(PreparePostPageInput $input): PreparePostPageOutput {
+		$postId = $input->getPostId();
+		$post = $this->postRepository->getById($postId);
 		return new PostPageInfo($post);
 	}
 }

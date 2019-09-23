@@ -13,28 +13,28 @@ use App\Service\UsecaseOutput\Impls\CreateDraftOutput\DraftInfo;
 use App\Service\UsecaseOutput\Impls\CreateDraftOutput\InputError;
 use App\Service\UsecaseOutput\Impls\CreateDraftOutput\SavingError;
 use App\System\Exception\UnacceptableSettingException;
-use App\Service\DiContainer as Di;
+use Exception;
 
 class CreateDraftUsecase implements CreateDraft {
 
-	private $input;
+	private $draftRepository;
 
-	public function __construct(CreateDraftInput $input) {
-		$this->input = $input;
+	public function __construct(DraftRepository $draftRepository) {
+	    $this->draftRepository = $draftRepository;
 	}
 
-	public function execute(): CreateDraftOutput {
+	public function execute(CreateDraftInput $input): CreateDraftOutput {
 		try {
-			$title = new Title($this->input->getTitleInput());
-			$content = new Content($this->input->getContentInput());
+			$title = new Title($input->getTitleInput());
+			$content = new Content($input->getContentInput());
 		} catch (UnacceptableSettingException $e) {
 			return new InputError();
 		}
 
 		$createDraft = new CreateDraftModel($title, $content);
 		try {
-			$draft = Di::get(DraftRepository::class)->create($createDraft);
-		} catch (\Exception $e) {
+			$draft = $this->draftRepository->create($createDraft);
+		} catch (Exception $e) {
 			return new SavingError();
 		}
 		return new DraftInfo($draft);

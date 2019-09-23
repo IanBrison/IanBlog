@@ -7,7 +7,5 @@ use App\Service\UsecaseOutput\UpdateThoughtOutput;
 
 interface UpdateThought {
 
-    public function __construct(UpdateThoughtInput $input);
-
-    public function execute(): UpdateThoughtOutput;
+    public function execute(UpdateThoughtInput $input): UpdateThoughtOutput;
 }

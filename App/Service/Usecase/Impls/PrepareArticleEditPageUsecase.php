@@ -9,23 +9,30 @@ use App\Service\UsecaseInput\PrepareArticleEditPageInput;
 use App\Service\UsecaseOutput\Impls\PrepareArticleEditPageOutput\ArticleEditPageInfo;
 use App\Service\UsecaseOutput\Impls\PrepareArticleEditPageOutput\IsNotAuthenticated;
 use App\Service\UsecaseOutput\PrepareArticleEditPageOutput;
-use App\Service\DiContainer as Di;
+use App\System\Exception\DataNotFoundException;
 
 class PrepareArticleEditPageUsecase implements PrepareArticleEditPage {
 
-	private $input;
+	private $authRepository;
+	private $articleRepository;
 
-	public function __construct(PrepareArticleEditPageInput $input) {
-		$this->input = $input;
+	public function __construct(AuthRepository $authRepository, ArticleRepository $articleRepository) {
+		$this->authRepository = $authRepository;
+		$this->articleRepository = $articleRepository;
 	}
 
-	public function execute(): PrepareArticleEditPageOutput {
-		if (!Di::get(AuthRepository::class)->isAuthenticated()) {
+    /**
+     * @param PrepareArticleEditPageInput $input
+     * @return PrepareArticleEditPageOutput
+     * @throws DataNotFoundException
+     */
+    public function execute(PrepareArticleEditPageInput $input): PrepareArticleEditPageOutput {
+		if (!$this->authRepository->isAuthenticated()) {
 			return new IsNotAuthenticated();
 		}
 
-		$articleId = $this->input->getArticleId();
-		$article = Di::get(ArticleRepository::class)->getById($articleId);
+		$articleId = $input->getArticleId();
+		$article = $this->articleRepository->getById($articleId);
 		return new ArticleEditPageInfo($article);
 	}
 }

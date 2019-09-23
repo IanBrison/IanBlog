@@ -7,7 +7,5 @@ use App\Service\UsecaseOutput\PreparePostPageOutput;
 
 interface PreparePostPage {
 
-    public function __construct(PreparePostPageInput $input);
-
-    public function execute(): PreparePostPageOutput;
+    public function execute(PreparePostPageInput $input): PreparePostPageOutput;
 }

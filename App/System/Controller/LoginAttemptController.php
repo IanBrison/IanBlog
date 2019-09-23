@@ -17,9 +17,9 @@ class LoginAttemptController extends Controller {
 		$input = new AttemptLoginInput($request);
 
 		/** @var AttemptLogin $usecase */
-		$usecase = Di::get(AttemptLogin::class, $input);
+		$usecase = Di::get(AttemptLogin::class);
 
-		$output = $usecase->execute();
+		$output = $usecase->execute($input);
 		$presenter = new AttemptLoginPresenter($output);
 
 		$presenter->present();

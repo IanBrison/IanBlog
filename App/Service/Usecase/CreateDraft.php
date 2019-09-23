@@ -7,7 +7,5 @@ use App\Service\UsecaseOutput\CreateDraftOutput;
 
 interface CreateDraft {
 
-    public function __construct(CreateDraftInput $input);
-
-    public function execute(): CreateDraftOutput;
+    public function execute(CreateDraftInput $input): CreateDraftOutput;
 }

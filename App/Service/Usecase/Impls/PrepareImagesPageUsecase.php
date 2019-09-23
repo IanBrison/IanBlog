@@ -8,16 +8,23 @@ use App\Service\Usecase\PrepareImagesPage;
 use App\Service\UsecaseOutput\Impls\PrepareImagesPageOutput\ImagesPageInfo;
 use App\Service\UsecaseOutput\Impls\PrepareImagesPageOutput\IsNotAuthenticated;
 use App\Service\UsecaseOutput\PrepareImagesPageOutput;
-use App\Service\DiContainer as Di;
 
 class PrepareImagesPageUsecase implements PrepareImagesPage {
 
+    private $authRepository;
+    private $imageRepository;
+
+    public function __construct(AuthRepository $authRepository, ImageRepository $imageRepository) {
+        $this->authRepository = $authRepository;
+        $this->imageRepository = $imageRepository;
+    }
+
     public function execute(): PrepareImagesPageOutput {
-        if (!Di::get(AuthRepository::class)->isAuthenticated()) {
+        if (!$this->authRepository->isAuthenticated()) {
             return new IsNotAuthenticated();
         }
 
-        $images = Di::get(ImageRepository::class)->getAll();
+        $images = $this->imageRepository->getAll();
         return new ImagesPageInfo($images);
     }
 }

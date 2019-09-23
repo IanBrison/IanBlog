@@ -6,12 +6,17 @@ use App\Service\Repository\Read\ThoughtRepository;
 use App\Service\Usecase\PrepareThoughtsPage;
 use App\Service\UsecaseOutput\Impls\PrepareThoughtsPageOutput\ThoughtsPageInfo;
 use App\Service\UsecaseOutput\PrepareThoughtsPageOutput;
-use App\Service\DiContainer as Di;
 
 class PrepareThoughtsPageUsecase implements PrepareThoughtsPage {
 
-	public function execute(): PrepareThoughtsPageOutput {
-		$thoughts = Di::get(ThoughtRepository::class)->getAll();
+    private $thoughtRepository;
+
+    public function __construct(ThoughtRepository $thoughtRepository) {
+        $this->thoughtRepository = $thoughtRepository;
+    }
+
+    public function execute(): PrepareThoughtsPageOutput {
+		$thoughts = $this->thoughtRepository->getAll();
 		return new ThoughtsPageInfo($thoughts);
 	}
 }

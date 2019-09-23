@@ -2,7 +2,6 @@
 
 namespace App\Service\Usecase\Impls;
 
-use App\Model\Read\Post;
 use App\Model\ValueObject\Content;
 use App\Model\ValueObject\Title;
 use App\Service\Repository\Read\PostRepository as ReadPostRepository;
@@ -13,31 +12,37 @@ use App\Service\UsecaseOutput\Impls\UpdatePostOutput\InputError;
 use App\Service\UsecaseOutput\Impls\UpdatePostOutput\PostInfo;
 use App\Service\UsecaseOutput\Impls\UpdatePostOutput\SavingError;
 use App\Service\UsecaseOutput\UpdatePostOutput;
+use App\System\Exception\DataNotFoundException;
 use App\System\Exception\UnacceptableSettingException;
-use App\Service\DiContainer as Di;
 use Exception;
 
 class UpdatePostUsecase implements UpdatePost {
 
-    private $input;
+    private $readPostRepository;
+    private $writePostRepository;
 
-    public function __construct(UpdatePostInput $input) {
-        $this->input = $input;
+    public function __construct(ReadPostRepository $readPostRepository, WritePostRepository $writePostRepository) {
+        $this->readPostRepository = $readPostRepository;
+        $this->writePostRepository = $writePostRepository;
     }
 
-    public function execute(): UpdatePostOutput {
-        /** @var Post $post */
-        $post = Di::get(ReadPostRepository::class)->getById($this->input->getPostId());
+    /**
+     * @param UpdatePostInput $input
+     * @return UpdatePostOutput
+     * @throws DataNotFoundException
+     */
+    public function execute(UpdatePostInput $input): UpdatePostOutput {
+        $post = $this->readPostRepository->getById($input->getPostId());
 		try {
-			$title = new Title($this->input->getTitleInput());
-			$content = new Content($this->input->getContentInput());
+			$title = new Title($input->getTitleInput());
+			$content = new Content($input->getContentInput());
 		} catch (UnacceptableSettingException $e) {
 			return new InputError();
 		}
 
 		$updatePost = $post->update($title, $content);
 		try {
-		    $post = Di::get(WritePostRepository::class)->update($updatePost);
+		    $post = $this->writePostRepository->update($updatePost);
         } catch (Exception $e) {
 		    return new SavingError();
         }

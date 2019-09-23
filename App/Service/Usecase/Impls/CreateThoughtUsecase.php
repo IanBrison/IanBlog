@@ -14,29 +14,29 @@ use App\Service\UsecaseOutput\Impls\CreateThoughtOutput\InputError;
 use App\Service\UsecaseOutput\Impls\CreateThoughtOutput\SavingError;
 use App\Service\UsecaseOutput\Impls\CreateThoughtOutput\ThoughtInfo;
 use App\System\Exception\UnacceptableSettingException;
-use App\Service\DiContainer as Di;
+use Exception;
 
 class CreateThoughtUsecase implements CreateThought {
 
-	private $input;
+	private $thoughtRepository;
 
-	public function __construct(CreateThoughtInput $input) {
-		$this->input = $input;
+	public function __construct(ThoughtRepository $thoughtRepository) {
+		$this->thoughtRepository = $thoughtRepository;
 	}
 
-	public function execute(): CreateThoughtOutput {
+	public function execute(CreateThoughtInput $input): CreateThoughtOutput {
 		try {
-			$title = new Title($this->input->getTitleInput());
-			$content = new Content($this->input->getContentInput());
-			$key = new Key($this->input->getKeyInput());
+			$title = new Title($input->getTitleInput());
+			$content = new Content($input->getContentInput());
+			$key = new Key($input->getKeyInput());
 		} catch (UnacceptableSettingException $e) {
 			return new InputError();
 		}
 
 		$createThought = new CreateThoughtModel($title, $content, $key);
 		try {
-			$thought = Di::get(ThoughtRepository::class)->create($createThought);
-		} catch (\Exception $e) {
+			$thought = $this->thoughtRepository->create($createThought);
+		} catch (Exception $e) {
 			return new SavingError();
 		}
 		return new ThoughtInfo($thought);

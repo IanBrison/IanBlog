@@ -7,7 +7,5 @@ use App\Service\UsecaseOutput\CreateThoughtOutput;
 
 interface CreateThought {
 
-    public function __construct(CreateThoughtInput $input);
-
-    public function execute(): CreateThoughtOutput;
+    public function execute(CreateThoughtInput $input): CreateThoughtOutput;
 }

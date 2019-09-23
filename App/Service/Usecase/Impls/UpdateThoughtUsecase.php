@@ -2,7 +2,6 @@
 
 namespace App\Service\Usecase\Impls;
 
-use App\Model\Read\Thought;
 use App\Model\ValueObject\Content;
 use App\Model\ValueObject\Key;
 use App\Model\ValueObject\Title;
@@ -14,32 +13,38 @@ use App\Service\UsecaseOutput\Impls\UpdateThoughtOutput\InputError;
 use App\Service\UsecaseOutput\Impls\UpdateThoughtOutput\SavingError;
 use App\Service\UsecaseOutput\Impls\UpdateThoughtOutput\ThoughtInfo;
 use App\Service\UsecaseOutput\UpdateThoughtOutput;
+use App\System\Exception\DataNotFoundException;
 use App\System\Exception\UnacceptableSettingException;
-use App\Service\DiContainer as Di;
 use Exception;
 
 class UpdateThoughtUsecase implements UpdateThought {
 
-    private $input;
+    private $readThoughtRepository;
+    private $writeThoughtRepository;
 
-    public function __construct(UpdateThoughtInput $input) {
-        $this->input = $input;
+    public function __construct(ReadThoughtRepository $readThoughtRepository, WriteThoughtRepository $writeThoughtRepository) {
+        $this->readThoughtRepository = $readThoughtRepository;
+        $this->writeThoughtRepository = $writeThoughtRepository;
     }
 
-    public function execute(): UpdateThoughtOutput {
-        /** @var Thought $thought */
-        $thought = Di::get(ReadThoughtRepository::class)->getById($this->input->getThoughtId());
+    /**
+     * @param UpdateThoughtInput $input
+     * @return UpdateThoughtOutput
+     * @throws DataNotFoundException
+     */
+    public function execute(UpdateThoughtInput $input): UpdateThoughtOutput {
+        $thought = $this->readThoughtRepository->getById($input->getThoughtId());
 		try {
-			$title = new Title($this->input->getTitleInput());
-			$content = new Content($this->input->getContentInput());
-            $key = new Key($this->input->getKeyInput());
+			$title = new Title($input->getTitleInput());
+			$content = new Content($input->getContentInput());
+            $key = new Key($input->getKeyInput());
 		} catch (UnacceptableSettingException $e) {
 			return new InputError();
 		}
 
 		$updateThought = $thought->update($title, $content, $key);
 		try {
-		    $thought = Di::get(WriteThoughtRepository::class)->update($updateThought);
+		    $thought = $this->writeThoughtRepository->update($updateThought);
         } catch (Exception $e) {
 		    return new SavingError();
         }

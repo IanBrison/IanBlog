@@ -7,7 +7,5 @@ use App\Service\UsecaseOutput\AttemptLoginOutput;
 
 interface AttemptLogin {
 
-    public function __construct(AttemptLoginInput $input);
-
-    public function execute(): AttemptLoginOutput;
+    public function execute(AttemptLoginInput $input): AttemptLoginOutput;
 }

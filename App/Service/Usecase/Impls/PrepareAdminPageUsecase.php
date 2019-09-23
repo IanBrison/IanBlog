@@ -8,16 +8,23 @@ use App\Service\Usecase\PrepareAdminPage;
 use App\Service\UsecaseOutput\Impls\PrepareAdminPageOutput\AdminPageInfo;
 use App\Service\UsecaseOutput\Impls\PrepareAdminPageOutput\IsNotAuthenticated;
 use App\Service\UsecaseOutput\PrepareAdminPageOutput;
-use App\Service\DiContainer as Di;
 
 class PrepareAdminPageUsecase implements PrepareAdminPage {
 
-	public function execute(): PrepareAdminPageOutput {
-		if (!Di::get(AuthRepository::class)->isAuthenticated()) {
+    private $authRepository;
+    private $articleRepository;
+
+    public function __construct(AuthRepository $authRepository, ArticleRepository $articleRepository) {
+        $this->authRepository = $authRepository;
+        $this->articleRepository = $articleRepository;
+    }
+
+    public function execute(): PrepareAdminPageOutput {
+		if (!$this->authRepository->isAuthenticated()) {
 			return new IsNotAuthenticated();
 		}
 
-		$articles = Di::get(ArticleRepository::class)->getAll();
+		$articles = $this->articleRepository->getAll();
 		return new AdminPageInfo($articles);
 	}
 }

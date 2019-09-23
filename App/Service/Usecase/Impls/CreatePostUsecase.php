@@ -13,28 +13,28 @@ use App\Service\UsecaseOutput\Impls\CreatePostOutput\InputError;
 use App\Service\UsecaseOutput\Impls\CreatePostOutput\PostInfo;
 use App\Service\UsecaseOutput\Impls\CreatePostOutput\SavingError;
 use App\System\Exception\UnacceptableSettingException;
-use App\Service\DiContainer as Di;
+use Exception;
 
 class CreatePostUsecase implements CreatePost {
 
-	private $input;
+	private $postRepository;
 
-	public function __construct(CreatePostInput $input) {
-		$this->input = $input;
+	public function __construct(PostRepository $postRepository) {
+		$this->postRepository = $postRepository;
 	}
 
-	public function execute(): CreatePostOutput {
+	public function execute(CreatePostInput $input): CreatePostOutput {
 		try {
-			$title = new Title($this->input->getTitleInput());
-			$content = new Content($this->input->getContentInput());
+			$title = new Title($input->getTitleInput());
+			$content = new Content($input->getContentInput());
 		} catch (UnacceptableSettingException $e) {
 			return new InputError();
 		}
 
 		$createPost = new CreatePostModel($title, $content);
 		try {
-			$post = Di::get(PostRepository::class)->create($createPost);
-		} catch (\Exception $e) {
+			$post = $this->postRepository->create($createPost);
+		} catch (Exception $e) {
 			return new SavingError();
 		}
 		return new PostInfo($post);
